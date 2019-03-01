@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/windows/servercore
 MAINTAINER Pollen Metrology <admin-team@pollen-metrology.com>
 
+# Will be used for agent.jar retrieval
+ARG JENKINS_VERSION=3.28
+
 # Install Chocolatey package manager
 # see https://chocolatey.org/
 RUN powershell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
@@ -26,6 +29,12 @@ RUN python -m pip install conan
 #
 # Hacks for Git via SSH works in the Windows container
 #
+# We will use c:\jks as Jenkins home
+#
+RUN mkdir c:\jks
+
+# Download Jenkins booststrap
+RUN curl --create-dirs -fsSLo c:/jks/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar
 
 # 1. Fixing permissions (per https://github.com/PowerShell/Win32-OpenSSH/wiki/Install-Win32-OpenSSH) 
 # RUN Powershell.exe -ExecutionPolicy Bypass -Command ". c:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1 -Confirm:$false" 
@@ -47,11 +56,6 @@ RUN cacls c:\jks /E /R "NT AUTHORITY\SYSTEM"
 
 # Create cache folder for Yarn
 RUN mkdir c:\dev\cache\yarn
-
-# Copy boostrap Jenkins agent
-# TODO get it from elswhere
-RUN mkdir c:\jks
-COPY agent.jar c:/jks
 
 # Fix system Path
 RUN setx PATH "c:\Program Files\CMake\bin;%PATH%"
