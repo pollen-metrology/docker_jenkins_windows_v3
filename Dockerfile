@@ -34,7 +34,7 @@ RUN python -m pip install conan
 RUN mkdir c:\jks
 
 # Download Jenkins booststrap
-RUN curl --create-dirs -fsSLo c:/jks/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar
+RUN curl -fsSLo c:\jks\agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/%JENKINS_VERSION%/remoting-%JENKINS_VERSION%.jar
 
 # 1. Fixing permissions (per https://github.com/PowerShell/Win32-OpenSSH/wiki/Install-Win32-OpenSSH) 
 # RUN Powershell.exe -ExecutionPolicy Bypass -Command ". c:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1 -Confirm:$false" 
