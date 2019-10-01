@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/windows/servercore
 MAINTAINER Pollen Metrology <admin-team@pollen-metrology.com>
 
 # Will be used for agent.jar retrieval
-ARG JENKINS_VERSION=3.28
+ARG JENKINS_VERSION=3.35
 
 # Install Chocolatey package manager
 # see https://chocolatey.org/
